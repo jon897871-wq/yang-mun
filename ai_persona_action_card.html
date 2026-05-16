@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Persona System — Final Action Card</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+    background: #f5f4f0;
+    color: #1a1a18;
+    padding: 2rem 1.5rem;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .page-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: #888780;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .page-sub {
+    font-size: 22px;
+    font-weight: 500;
+    color: #1a1a18;
+    margin-bottom: 24px;
+  }
+
+  .metric-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .metric {
+    background: #eceae3;
+    border-radius: 10px;
+    padding: .75rem 1rem;
+  }
+
+  .mval {
+    font-size: 22px;
+    font-weight: 500;
+    color: #1a1a18;
+  }
+
+  .mlabel {
+    font-size: 11px;
+    color: #888780;
+    margin-top: 2px;
+  }
+
+  .formula {
+    background: #eceae3;
+    border-radius: 10px;
+    padding: .75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+
+  .fb { font-weight: 500; color: #1a1a18; }
+  .fa { color: #888780; font-size: 11px; }
+  .fmeta { margin-left: auto; font-size: 11px; color: #888780; }
+
+  .sec {
+    font-size: 11px;
+    font-weight: 500;
+    color: #888780;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    margin: 20px 0 8px;
+  }
+
+  .grid2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .card {
+    background: #fff;
+    border: 0.5px solid rgba(0,0,0,0.1);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+  }
+
+  .card-l { border-left: 3px solid; }
+
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+  }
+
+  .row {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    margin-bottom: 7px;
+  }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 6px;
+  }
+
+  .row p { font-size: 13px; color: #1a1a18; margin: 0; line-height: 1.5; }
+
+  .hl {
+    background: #f5f4f0;
+    border-radius: 8px;
+    padding: .6rem .85rem;
+    margin-bottom: 7px;
+  }
+
+  .hl-l {
+    font-size: 11px;
+    font-weight: 500;
+    color: #888780;
+    margin-bottom: 2px;
+  }
+
+  .hl p { font-size: 13px; margin: 0; line-height: 1.5; color: #1a1a18; }
+
+  .vs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .vs-col {
+    background: #f5f4f0;
+    border-radius: 8px;
+    padding: .65rem .9rem;
+  }
+
+  .vs-l { font-size: 11px; font-weight: 500; margin-bottom: 5px; }
+
+  .vi {
+    font-size: 12px;
+    color: #5f5e5a;
+    margin: 2px 0;
+    padding-left: 8px;
+    border-left: 2px solid;
+  }
+
+  .phase {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 7px;
+    align-items: flex-start;
+  }
+
+  .phase-num {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 500;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .phase p { font-size: 13px; margin: 0; line-height: 1.5; color: #1a1a18; }
+
+  .week-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+
+  .week-box {
+    background: #f5f4f0;
+    border-radius: 8px;
+    padding: .65rem .9rem;
+  }
+
+  .week-l { font-size: 11px; font-weight: 500; color: #888780; margin-bottom: 3px; }
+  .week-v { font-size: 15px; font-weight: 500; color: #1a1a18; margin-bottom: 3px; }
+  .week-note { font-size: 11px; color: #888780; line-height: 1.4; }
+
+  .ratio-note {
+    margin-top: 8px;
+    font-size: 12px;
+    color: #5f5e5a;
+    padding: .5rem .75rem;
+    background: #f5f4f0;
+    border-radius: 8px;
+  }
+
+  strong { font-weight: 500; }
+
+  @media (max-width: 600px) {
+    .metric-row { grid-template-columns: repeat(2, 1fr); }
+    .week-grid { grid-template-columns: repeat(2, 1fr); }
+    .formula { gap: 4px; }
+    .fmeta { margin-left: 0; width: 100%; margin-top: 4px; }
+  }
+
+  @media print {
+    body { background: #fff; padding: 1rem; }
+    .card { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <p class="page-title">Research synthesis</p>
+  <p class="page-sub">AI Persona System — Final Action Card</p>
+
+  <div class="metric-row">
+    <div class="metric"><div class="mval">80%</div><div class="mlabel">script drives virality</div></div>
+    <div class="metric"><div class="mval">1–2s</div><div class="mlabel">hook window</div></div>
+    <div class="metric"><div class="mval">2:1</div><div class="mlabel">value to promo ratio</div></div>
+    <div class="metric"><div class="mval">$20–80</div><div class="mlabel">product sweet spot</div></div>
+  </div>
+
+  <div class="formula">
+    <span class="fb">0–2s: pain</span><span class="fa">→</span>
+    <span class="fb">2–5s: reframe/fix</span><span class="fa">→</span>
+    <span class="fb">5–45s: one thing</span><span class="fa">→</span>
+    <span class="fb">last 3s: identity</span>
+    <span class="fmeta">Shalev's exact timing</span>
+  </div>
+
+  <!-- PHASE 1 -->
+  <div class="sec">Phase 1 — Setup (do once)</div>
+  <div class="grid2">
+
+    <div class="card card-l" style="border-left-color:#534AB7">
+      <div class="tag" style="background:#EEEDFE;color:#3C3489">Character</div>
+      <div class="row"><div class="dot" style="background:#534AB7"></div><p>Can't look normal — monk, grandmother, shaikh, tradesman in traditional dress. If they blend in a crowd, start over</p></div>
+      <div class="row"><div class="dot" style="background:#534AB7"></div><p>Appearance must answer "why listen?" before they speak</p></div>
+      <div class="row"><div class="dot" style="background:#534AB7"></div><p>Lock: same face, same background, same outfit, same intro/outro. Every video, forever</p></div>
+      <div class="row"><div class="dot" style="background:#534AB7"></div><p>Build: Nano Banana (face) → ElevenLabs (voice, set once) → HeyGen/Kling (animation)</p></div>
+    </div>
+
+    <div class="card card-l" style="border-left-color:#1D9E75">
+      <div class="tag" style="background:#E1F5EE;color:#085041">Product filter</div>
+      <div class="row"><div class="dot" style="background:#1D9E75"></div><p>$20–80 retail · 15–30% commission · demonstrable benefit in 12 seconds</p></div>
+      <div class="row"><div class="dot" style="background:#1D9E75"></div><p>Min 50 sales/week · 4+ stars · 3+ creators already converting on it</p></div>
+      <div class="vs">
+        <div class="vs-col">
+          <div class="vs-l" style="color:#1D9E75">✓ Print</div>
+          <div class="vi" style="border-color:#1D9E75">Skincare · supplements</div>
+          <div class="vi" style="border-color:#1D9E75">Kitchen · pet products</div>
+          <div class="vi" style="border-color:#1D9E75">Home org · ortho wear</div>
+        </div>
+        <div class="vs-col">
+          <div class="vs-l" style="color:#c0392b">✗ Avoid</div>
+          <div class="vi" style="border-color:#c0392b">Apparel · electronics</div>
+          <div class="vi" style="border-color:#c0392b">Under $10 · over $200</div>
+          <div class="vi" style="border-color:#c0392b">Trendy gimmicks</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card card-l" style="border-left-color:#378ADD">
+      <div class="tag" style="background:#E6F1FB;color:#0C447C">Skill graph (document before posting)</div>
+      <div class="row"><div class="dot" style="background:#378ADD"></div><p>Platform rules — TikTok, Reels, Shorts specifics</p></div>
+      <div class="row"><div class="dot" style="background:#378ADD"></div><p>Brand voice — ElevenLabs settings, character vocabulary, tone boundaries</p></div>
+      <div class="row"><div class="dot" style="background:#378ADD"></div><p>Hook library — proven openers, updated after each winning video</p></div>
+      <div class="row"><div class="dot" style="background:#378ADD"></div><p>Campaign log — performance ledger; consult before every batch</p></div>
+    </div>
+
+    <div class="card card-l" style="border-left-color:#BA7517">
+      <div class="tag" style="background:#FAEEDA;color:#633806">ManyChat — set up before day 1</div>
+      <div class="row"><div class="dot" style="background:#BA7517"></div><p>Keyword trigger in comments → 4-message DM flow → affiliate link</p></div>
+      <div class="row"><div class="dot" style="background:#BA7517"></div><p>31–41% CTR via DM vs 4% via email — the actual conversion mechanism</p></div>
+      <div class="row"><div class="dot" style="background:#BA7517"></div><p>Reference yellow basket icon in every product video CTA</p></div>
+    </div>
+
+  </div>
+
+  <!-- PHASE 2 -->
+  <div class="sec">Phase 2 — Warm-up (days 1–13)</div>
+  <div class="card" style="margin-bottom:10px">
+    <div class="phase"><div class="phase-num" style="background:#EEEDFE;color:#534AB7">1</div><p>Days 1–3: browse only. Train the algorithm on your niche before posting anything.</p></div>
+    <div class="phase"><div class="phase-num" style="background:#EEEDFE;color:#534AB7">2</div><p>Days 4–7: comment only. Build account credibility signal.</p></div>
+    <div class="phase"><div class="phase-num" style="background:#EEEDFE;color:#534AB7">3</div><p>Days 8–13: post 8 normal, non-product videos. No selling.</p></div>
+    <div class="phase" style="margin-bottom:0"><div class="phase-num" style="background:#EEEDFE;color:#534AB7">4</div><p>Day 14: start real content. The algorithm now knows who to show it to.</p></div>
+  </div>
+
+  <!-- PHASE 3 -->
+  <div class="sec">Phase 3 — Volume ramp (30 days)</div>
+  <div class="card" style="margin-bottom:10px">
+    <div class="week-grid">
+      <div class="week-box"><div class="week-l">Week 1</div><div class="week-v">10–20/day</div><div class="week-note">60–80 minimum for algorithm to find audience</div></div>
+      <div class="week-box"><div class="week-l">Week 2</div><div class="week-v">20–30/day</div><div class="week-note">90% of pages die here — operator "gets clever"</div></div>
+      <div class="week-box"><div class="week-l">Week 3</div><div class="week-v">30–40/day</div><div class="week-note">Do not deviate from schedule</div></div>
+      <div class="week-box"><div class="week-l">Week 4</div><div class="week-v">40–50/day</div><div class="week-note">After stability: ramp to 100/day</div></div>
+    </div>
+    <div class="ratio-note">2:1 ratio always: 2 educational (recipes, tips, demos — no product) · 1 product video (18-second BOF format). Educational pulls 5–20× the views; product monetises that audience. Both are required.</div>
+  </div>
+
+  <!-- PHASE 4 -->
+  <div class="sec">Phase 4 — Script production</div>
+  <div class="grid2">
+
+    <div class="card card-l" style="border-left-color:#D85A30">
+      <div class="tag" style="background:#FAECE7;color:#712B13">3 formulas (70M views combined)</div>
+      <div class="hl"><div class="hl-l">Reframe — 24M views</div><p>Find what they feel guilty about. Don't tell them to stop. Tell them to redirect it. "If you're going to overthink… overthink the positive."</p></div>
+      <div class="hl"><div class="hl-l">You're doing it wrong — 23M views</div><p>Pick the most boring daily habit. Make it feel dangerous. "You drink water the wrong way, my friend."</p></div>
+      <div class="hl" style="margin-bottom:0"><div class="hl-l">Validation — 22.4M views</div><p>Don't teach. Say what they already feel but can't articulate. "Keep it private until it's permanent." You're the mirror, not the teacher.</p></div>
+    </div>
+
+    <div class="card card-l" style="border-left-color:#639922">
+      <div class="tag" style="background:#EAF3DE;color:#3B6D11">5 content rules (Pounds)</div>
+      <div class="row"><div class="dot" style="background:#639922"></div><p><strong>Relatability</strong> — "that's me" moment within 3 seconds</p></div>
+      <div class="row"><div class="dot" style="background:#639922"></div><p><strong>Specificity</strong> — vague scripts die; use exact numbers and names</p></div>
+      <div class="row"><div class="dot" style="background:#639922"></div><p><strong>Open loops</strong> — tease what's coming so they can't leave mid-video</p></div>
+      <div class="row"><div class="dot" style="background:#639922"></div><p><strong>Emotional contrast</strong> — move between at least two emotional states</p></div>
+      <div class="row"><div class="dot" style="background:#639922"></div><p><strong>Rewatch value</strong> — end with something people save or share</p></div>
+      <div class="ratio-note" style="margin-top:8px">Batch 30–100 scripts before posting anything. Use Claude with character + audience + pain point + examples of scripts that worked.</div>
+    </div>
+
+  </div>
+
+  <!-- PHASE 5 -->
+  <div class="sec">Phase 5 — Optimise and scale</div>
+  <div class="grid2">
+
+    <div class="card card-l" style="border-left-color:#534AB7">
+      <div class="tag" style="background:#EEEDFE;color:#3C3489">Data diagnostics</div>
+      <div class="hl"><div class="hl-l">At 3 seconds — TSR</div><p>Drop-off &gt;60%: hook is the failure. Not the product, not the persona.</p></div>
+      <div class="hl"><div class="hl-l">At 25% — VTR</div><p>High drop-off: persona-audience mismatch or pacing. Not the hook.</p></div>
+      <div class="hl" style="margin-bottom:0"><div class="hl-l">Winners</div><p>Don't tweak. Duplicate 10–30× with minimal variation. Capitalise on algorithmic momentum before it fades.</p></div>
+    </div>
+
+    <div class="card card-l" style="border-left-color:#1D9E75">
+      <div class="tag" style="background:#E1F5EE;color:#085041">Scale protocol</div>
+      <div class="phase"><div class="phase-num" style="background:#E1F5EE;color:#1D9E75">1</div><p>Hit $5K/month with first character</p></div>
+      <div class="phase"><div class="phase-num" style="background:#E1F5EE;color:#1D9E75">2</div><p>Launch second character in adjacent niche using same Skill Graph</p></div>
+      <div class="phase"><div class="phase-num" style="background:#E1F5EE;color:#1D9E75">3</div><p>3×/day per character · same video native-uploaded to TikTok, Reels, Shorts, Facebook Reels</p></div>
+      <div class="phase" style="margin-bottom:0"><div class="phase-num" style="background:#E1F5EE;color:#1D9E75">4</div><p>Move from batching to oversight — delegate production once system is proven</p></div>
+    </div>
+
+  </div>
+
+  <div style="margin-top:24px;font-size:11px;color:#b4b2a9;text-align:right">Sources: Shalev (@shalevhvs) · levikov (@69kov) · Pounds (@pounddz) · framework docs synthesis</div>
+
+</div>
+</body>
+</html>
